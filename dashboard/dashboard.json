@@ -1,0 +1,1301 @@
+{
+  "uuid": "9f376f1f-ac3a-423c-8582-8db3494e4586",
+  "title": "Music",
+  "version": "2.4",
+  "settings": {
+    "pagenumber": 0,
+    "editable": true,
+    "fullscreenEnabled": false,
+    "parameters": {
+      "neodash_genre_name": "Pop",
+      "neodash_genre_name_display": "Pop",
+      "neodash_person_hours_per_day": "1.5",
+      "neodash_person_hours_per_day_display": "1.5",
+      "neodash_person_age": 18,
+      "neodash_person_age_display": 18
+    },
+    "theme": "light"
+  },
+  "pages": [
+    {
+      "title": "General Data Analysis (Analyzing Columns)",
+      "reports": [
+        {
+          "id": "05311bd7-e401-4bdd-acd9-5d7ae3a18a58",
+          "title": "Respondent's ages",
+          "query": "MATCH (p:Person)\nWITH \n  CASE \n    WHEN p.age < 15 THEN '10-14'\n    WHEN p.age < 20 THEN '15-19'\n    WHEN p.age < 25 THEN '20-24'\n    WHEN p.age < 30 THEN '25-29'\n    WHEN p.age < 35 THEN '30-34'\n    WHEN p.age < 40 THEN '35-39'\n    WHEN p.age < 45 THEN '40-44'\n    WHEN p.age < 50 THEN '45-49'\n    WHEN p.age < 55 THEN '50-54'\n    WHEN p.age < 60 THEN '55-59'\n    WHEN p.age < 65 THEN '60-64'\n    WHEN p.age < 70 THEN '65-69'\n    WHEN p.age < 75 THEN '70-74'\n    ELSE '75+'\n  END as `Age Range`,\n  COUNT(p) as `Number of Respondents`\nRETURN `Age Range`, `Number of Respondents`\nORDER BY \n  CASE `Age Range`\n    WHEN '10-14' THEN 1\n    WHEN '15-19' THEN 2\n    WHEN '20-24' THEN 3\n    WHEN '25-29' THEN 4\n    WHEN '30-34' THEN 5\n    WHEN '35-39' THEN 6\n    WHEN '40-44' THEN 7\n    WHEN '45-49' THEN 8\n    WHEN '50-54' THEN 9\n    WHEN '55-59' THEN 10\n    WHEN '60-64' THEN 11\n    WHEN '65-69' THEN 12\n    WHEN '70-74' THEN 13\n    ELSE 14\n  END;",
+          "width": 9,
+          "height": 4,
+          "x": 6,
+          "y": 0,
+          "type": "bar",
+          "selection": {
+            "index": "Age Range",
+            "value": "Number of Respondents",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "f3e1753f-0d50-4bb9-8d47-a8e48bf4f931",
+          "title": "Number of hours respondent listens to music per day",
+          "query": "MATCH (p:Person)\nWHERE p.hours_per_day IS NOT NULL\nRETURN \n    CASE\n        WHEN p.hours_per_day <= 2.4 THEN '0-2.4'\n        WHEN p.hours_per_day <= 4.8 THEN '2.4-4.8'\n        WHEN p.hours_per_day <= 7.2 THEN '4.8-7.2'\n        WHEN p.hours_per_day <= 9.6 THEN '7.2-9.6'\n        ELSE '9.6+'\n    END as `Hours Range`,\n    COUNT(*) as count,\n    round(toFloat(COUNT(*)) * 100 / COUNT(*), 2) as percentage\nORDER BY substring(`Hours Range`, 0, 1);",
+          "width": 9,
+          "height": 4,
+          "x": 15,
+          "y": 0,
+          "type": "bar",
+          "selection": {
+            "index": "Hours Range",
+            "value": "count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true
+          },
+          "schema": []
+        },
+        {
+          "id": "fc464411-552e-4582-bc1a-6f2b1d0e29fe",
+          "title": "listen to music while studying/working?",
+          "query": "MATCH (p:Person)\nWHERE p.while_working IS NOT NULL\nWITH p.while_working as while_working, COUNT(*) as count\nRETURN \n   while_working as `Listens While Working`,\n   count as count,\n   round(toFloat(count) * 100 / 736, 2) as percentage\nORDER BY count DESC;",
+          "width": 9,
+          "height": 5,
+          "x": 0,
+          "y": 12,
+          "type": "pie",
+          "selection": {
+            "index": "Listens While Working",
+            "value": "count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "columnWidthsType": "Relative (%)",
+            "compact": true,
+            "transposed": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "a171586e-8410-454d-b1b3-6ad12a68110b",
+          "title": "Instrumentalist?",
+          "query": "MATCH (p:Person)\nWHERE p.instrumentalist IS NOT NULL\nWITH p.instrumentalist as plays, COUNT(*) as count\nRETURN \n   plays as `Plays Instrument`,\n   count as count,\n   round(toFloat(count) * 100 / 736, 2) as percentage\nORDER BY count DESC;",
+          "width": 8,
+          "height": 5,
+          "x": 13,
+          "y": 17,
+          "type": "pie",
+          "selection": {
+            "index": "Plays Instrument",
+            "value": "count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "marginRight": 25,
+            "marginLeft": 25,
+            "marginBottom": 25,
+            "colors": "pastel2"
+          },
+          "schema": []
+        },
+        {
+          "id": "35729d1a-01a5-4ced-a2a7-d7c695a56aa5",
+          "title": "Composer?",
+          "query": "MATCH (p:Person)\nWHERE p.composer IS NOT NULL\nWITH p.composer as composes, COUNT(*) as count\nRETURN \n   composes as `Composes Music`,\n   count as count,\n   round(toFloat(count) * 100 / 736, 2) as percentage\nORDER BY count DESC;\n",
+          "width": 9,
+          "height": 5,
+          "x": 4,
+          "y": 17,
+          "type": "pie",
+          "selection": {
+            "index": "Composes Music",
+            "value": "count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "marginLeft": 25,
+            "marginRight": 25,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "abc967b3-bd51-4939-94da-ae81a0196277",
+          "title": "Respondent's favorite or top genre",
+          "query": "MATCH (p:Person)\nWITH p.favorite_genre as genre, COUNT(*) as count\nRETURN \n    genre as Genre,\n    count as Count,\n    round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY count DESC;",
+          "width": 18,
+          "height": 3,
+          "x": 0,
+          "y": 9,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true,
+            "wrapContent": false,
+            "columnWidthsType": "Fixed (px)",
+            "transposed": true
+          }
+        },
+        {
+          "id": "8773f2fe-9fce-4710-a428-f308a1269ba2",
+          "title": "Do they explore new artists/genres?",
+          "query": "MATCH (p:Person)\nWHERE p.exploratory IS NOT NULL\nWITH p.exploratory as explores, COUNT(*) as count\nRETURN \n    explores as `Explores New Music`,\n    count as Count,\n    round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY Count DESC;",
+          "width": 7,
+          "height": 5,
+          "x": 17,
+          "y": 12,
+          "type": "pie",
+          "selection": {
+            "index": "Explores New Music",
+            "value": "Count",
+            "key": "(none)"
+          },
+          "settings": {
+            "marginLeft": 50,
+            "marginRight": 50,
+            "marginBottom": 50,
+            "colors": "set3",
+            "marginTop": 50
+          },
+          "schema": []
+        },
+        {
+          "id": "cac36582-b5fa-40af-adc0-f8f6ff79dd99",
+          "title": "Listen to foreign language music?",
+          "query": "MATCH (p:Person)\nWHERE p.foreign_languages IS NOT NULL\nWITH p.foreign_languages as foreign, COUNT(*) as count\nRETURN \n   foreign as `Listens Foreign Language`,\n   count as count,\n   round(toFloat(count) * 100 / 736, 2) as percentage\nORDER BY count DESC;",
+          "width": 8,
+          "height": 5,
+          "x": 9,
+          "y": 12,
+          "type": "pie",
+          "selection": {
+            "index": "Listens Foreign Language",
+            "value": "count",
+            "key": "(none)"
+          },
+          "settings": {
+            "downloadImageEnabled": true,
+            "fullscreenEnabled": true,
+            "marginLeft": 50,
+            "marginRight": 50,
+            "marginBottom": 50,
+            "colors": "pastel2"
+          },
+          "schema": []
+        },
+        {
+          "id": "55ddc142-8837-49e8-a2bc-f7df62262c3f",
+          "title": "Primary streaming services",
+          "query": "// Count users per streaming service and calculate percentages\nMATCH (p:Person)-[r:USES]->(s:StreamingService)\nWITH \n   s.name as `Streaming Service`, \n   COUNT(p) as Count,\n   toFloat(COUNT(p) * 100) / 736 as Percentage\nRETURN \n   `Streaming Service`,\n   Count,\n   round(Percentage, 2) as Percentage\nORDER BY Count DESC;\n\n\n",
+          "width": 6,
+          "height": 3,
+          "x": 18,
+          "y": 9,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true
+          }
+        },
+        {
+          "id": "0056e218-908f-49f4-a916-21f5b25adcb7",
+          "title": "N of Respondents",
+          "query": "MATCH (p:Person) RETURN COUNT(p)\n\n\n",
+          "width": 6,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "color": "rgba(39, 140, 245, 0.8)",
+            "fontSize": 70,
+            "textAlign": "center",
+            "verticalAlign": "middle"
+          },
+          "schema": []
+        },
+        {
+          "id": "38eacba9-e282-4e67-ad9e-f212254296df",
+          "title": "Favorite genre",
+          "query": "MATCH (p:Person)\nWITH p.favorite_genre as genre, count(*) as count\nRETURN genre, count\nORDER BY count DESC\nLIMIT 1\n\n\n",
+          "width": 6,
+          "height": 2,
+          "x": 0,
+          "y": 2,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "color": "rgba(39, 140, 245, 0.8)",
+            "fontSize": 70,
+            "textAlign": "center",
+            "verticalAlign": "middle"
+          },
+          "schema": []
+        },
+        {
+          "id": "c7a4e1db-d2cd-4659-9c8b-1071f242e5ce",
+          "title": "Primary streaming services",
+          "query": "// Count users per streaming service and calculate percentages\nMATCH (p:Person)-[r:USES]->(s:StreamingService)\nWITH \n   s.name as `Streaming Service`, \n   COUNT(p) as Count,\n   toFloat(COUNT(p) * 100) / 736 as Percentage\nRETURN \n   `Streaming Service`,\n   Count,\n   round(Percentage, 2) as Percentage\nORDER BY Count DESC;\n\n\n\n\n\n",
+          "width": 13,
+          "height": 5,
+          "x": 11,
+          "y": 4,
+          "type": "bar",
+          "selection": {
+            "index": "Streaming Service",
+            "value": "Count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "layout": "horizontal",
+            "colors": "paired",
+            "marginLeft": 100
+          },
+          "schema": []
+        },
+        {
+          "id": "f19ed776-801c-48be-9f0c-4245ee08875b",
+          "title": "Genres",
+          "query": "MATCH (p:Person)\nWITH p.favorite_genre as genre, COUNT(*) as count\nRETURN \n    genre as Genre,\n    count as Count,\n    round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY count DESC;\n\n\n",
+          "width": 11,
+          "height": 5,
+          "x": 0,
+          "y": 4,
+          "type": "pie",
+          "selection": {
+            "index": "Genre",
+            "value": "Count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": false,
+            "colors": "paired"
+          },
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "General Data Analysis (Deeper Version)",
+      "reports": [
+        {
+          "id": "05d2d9b3-d9d7-4848-aeb2-b74445293efe",
+          "title": "Which age group listens to some type of genre more frequently (detailed)",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE l.frequency = 'Very frequently'\nWITH \n    CASE \n        WHEN p.age < 20 THEN 'Under 20'\n        WHEN p.age < 30 THEN '20-29'\n        WHEN p.age < 40 THEN '30-39'\n        WHEN p.age < 50 THEN '40-49'\n        ELSE '50+'\n    END as age_group,\n    g.name as genre,\n    COUNT(*) as count\nRETURN \n    age_group as `Age Group`,\n    genre as Genre,\n    count as Count,\n    round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY \n    CASE age_group\n        WHEN 'Under 20' THEN 1\n        WHEN '20-29' THEN 2\n        WHEN '30-39' THEN 3\n        WHEN '40-49' THEN 4\n        ELSE 5\n    END,\n    count DESC;",
+          "width": 23,
+          "height": 3,
+          "x": 0,
+          "y": 17,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "transposed": true,
+            "compact": true
+          }
+        },
+        {
+          "id": "bc9a9b8f-c600-418e-a83e-f0e2e3b02e83",
+          "title": "Most used streaming service for age groups",
+          "query": "MATCH (p:Person)-[r:USES]->(s:StreamingService)\nWITH \n   CASE \n       WHEN p.age < 20 THEN 'Under 20'\n       WHEN p.age < 30 THEN '20-29'\n       WHEN p.age < 40 THEN '30-39'\n       WHEN p.age < 50 THEN '40-49'\n       ELSE '50+'\n   END as age_group,\n   s.name as service,\n   COUNT(*) as count\nWITH age_group, service, count\nORDER BY count DESC\nWITH age_group, COLLECT({service: service, count: count})[0] as top_service\nRETURN \n   age_group as `Age Group`,\n   top_service.service as `Most Used Service`,\n   top_service.count as Count\nORDER BY \n   CASE age_group\n       WHEN 'Under 20' THEN 1\n       WHEN '20-29' THEN 2\n       WHEN '30-39' THEN 3\n       WHEN '40-49' THEN 4\n       ELSE 5\n   END;",
+          "width": 7,
+          "height": 3,
+          "x": 7,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true,
+            "showOptionalSelections": true
+          },
+          "schema": []
+        },
+        {
+          "id": "b6bcebd4-cc36-4255-aa4a-2d455353fe08",
+          "title": "What genres are most liked by instrumentalists",
+          "query": "MATCH (p:Person)\nWHERE p.instrumentalist = 'Yes'\nWITH p.favorite_genre as genre, COUNT(*) as count\nMATCH (p:Person)\nWHERE p.instrumentalist = 'Yes'\nWITH genre, count, COUNT(p) as total_instrumentalists\nRETURN \n   genre as Genre,\n   count as Count,\n   round(toFloat(count * 100.0) / total_instrumentalists, 2) as Percentage\nORDER BY count DESC;\n\n\n",
+          "width": 23,
+          "height": 3,
+          "x": 0,
+          "y": 3,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "transposed": true,
+            "compact": true
+          }
+        },
+        {
+          "id": "dc54ebef-a6ea-424d-8116-15c2d27fc501",
+          "title": "Respondents by age, how many hours per day do they listen to music?",
+          "query": "MATCH (p:Person)\nWITH \n   CASE \n       WHEN p.age < 20 THEN 'Under 20'\n       WHEN p.age < 30 THEN '20-29'\n       WHEN p.age < 40 THEN '30-39'\n       WHEN p.age < 50 THEN '40-49'\n       ELSE '50+'\n   END as age_group,\n   p.hours_per_day as hours\nWITH \n   age_group,\n   COUNT(*) as person_count,\n   round(AVG(hours), 2) as avg_hours\nRETURN \n   age_group as `Age Group`,\n   person_count as `Number of People`,\n   avg_hours as `Average Hours Per Day`\nORDER BY \n   CASE age_group\n       WHEN 'Under 20' THEN 1\n       WHEN '20-29' THEN 2\n       WHEN '30-39' THEN 3\n       WHEN '40-49' THEN 4\n       ELSE 5\n   END;\n\n\n",
+          "width": 9,
+          "height": 3,
+          "x": 14,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true
+          }
+        },
+        {
+          "id": "425cc0a9-154d-4d1a-9d82-ae2acb5d5298",
+          "title": "What kind of genre of music do people choose to listen while it's their foreign language",
+          "query": "MATCH (p:Person)\nWHERE p.foreign_languages = 'Yes'\nWITH p.favorite_genre as genre, COUNT(*) as count\nMATCH (p:Person)\nWHERE p.foreign_languages = 'Yes'\nWITH genre, count, COUNT(p) as total_foreign_listeners\nRETURN \n   genre as Genre,\n   count as Count,\n   round(toFloat(count * 100.0) / total_foreign_listeners, 2) as Percentage\nORDER BY count DESC;\n\n\n",
+          "width": 17,
+          "height": 4,
+          "x": 0,
+          "y": 9,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true
+          }
+        },
+        {
+          "id": "3c1f6803-f96e-4690-ad98-a6d9a395c141",
+          "title": "By composers",
+          "query": "MATCH (p:Person)\nWHERE p.composer = 'Yes'\nWITH p.favorite_genre as genre, COUNT(*) as count\nMATCH (p:Person)\nWHERE p.composer = 'Yes'\nWITH genre, count, COUNT(p) as total_composer\nRETURN \n   genre as Genre,\n   count as Count,\n   round(toFloat(count * 100.0) / total_composer, 2) as Percentage\nORDER BY count DESC;\n\n\n\n\n\n",
+          "width": 23,
+          "height": 3,
+          "x": 0,
+          "y": 6,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "downloadImageEnabled": true,
+            "fullscreenEnabled": true,
+            "compact": true,
+            "transposed": true
+          }
+        },
+        {
+          "id": "ca5c5251-55aa-4c6a-9d83-b301cd3590d1",
+          "title": "Most popular music genres by age",
+          "query": "MATCH (p:Person)\nWITH \n   CASE \n       WHEN p.age < 20 THEN 'Under 20'\n       WHEN p.age < 30 THEN '20-29'\n       WHEN p.age < 40 THEN '30-39'\n       WHEN p.age < 50 THEN '40-49'\n       ELSE '50+'\n   END as age_group,\n   p.favorite_genre as genre,\n   COUNT(*) as count\nWITH age_group, genre, count\nORDER BY count DESC\nWITH age_group, COLLECT({genre: genre, count: count})[0] as top_genre\nRETURN \n   age_group as `Age Group`,\n   top_genre.genre as `Most Popular Genre`,\n   top_genre.count as Count\nORDER BY \n   CASE age_group\n       WHEN 'Under 20' THEN 1\n       WHEN '20-29' THEN 2\n       WHEN '30-39' THEN 3\n       WHEN '40-49' THEN 4\n       ELSE 5\n   END;\n\n\n",
+          "width": 7,
+          "height": 3,
+          "x": 0,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "compact": true
+          }
+        }
+      ]
+    },
+    {
+      "title": "Mental Health Analysis",
+      "reports": [
+        {
+          "id": "ad3a009e-be93-4572-a851-df3b0a234401",
+          "title": "How music affect mental health issues",
+          "query": "MATCH (p:Person)\nWHERE p.music_effects IS NOT NULL\nWITH p.music_effects as effect, COUNT(*) as count\nRETURN \n   effect as `Music Effect`,\n   count as Count,\n   round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY count DESC;\n\n\n",
+          "width": 9,
+          "height": 4,
+          "x": 0,
+          "y": 0,
+          "type": "pie",
+          "selection": {
+            "index": "Music Effect",
+            "value": "Count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "dbbae5a4-eadb-4d38-9782-b9433adac940",
+          "title": "People between 10-20 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 10 AND p.age <= 20\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 22,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "8d53c484-89b0-418d-995d-e4a1d7749b21",
+          "title": "Instrumentalists and their mental health issues status",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWITH p AS person, m AS mental_health_issue, r.severity AS severity\nRETURN \n    person.instrumentalist AS is_instrumentalist,\n    mental_health_issue.type AS mental_health_issue,\n    AVG(severity) AS avg_severity\nORDER BY is_instrumentalist, mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 37,
+          "type": "bar",
+          "selection": {
+            "key": "mental_health_issue",
+            "index": "avg_severity",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "showOptionalSelections": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "924dedef-fd58-4e48-af91-c1946f9aa912",
+          "title": "Does listening to music at work help with mental health issues?",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWITH p AS person, m AS mental_health_issue, r.severity AS severity\nRETURN \n    person.while_working AS listens_while_working,\n    mental_health_issue.type AS mental_health_issue,\n    AVG(severity) AS avg_severity\nORDER BY listens_while_working, mental_health_issue\n\n\n\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 42,
+          "type": "bar",
+          "selection": {
+            "key": "listens_while_working",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "showOptionalSelections": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "df09ca57-b710-4e25-b744-c5515ac24c23",
+          "title": "Composers and their mental health issues status, show their mental health issues status",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWITH p AS person, m AS mental_health_issue, r.severity AS severity\nRETURN \n    person.composer AS is_composer,\n    mental_health_issue.type AS mental_health_issue,\n    AVG(severity) AS avg_severity\nORDER BY is_composer, mental_health_issue\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 37,
+          "type": "bar",
+          "selection": {
+            "key": "is_composer",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "set3",
+            "showOptionalSelections": true,
+            "legend": true
+          },
+          "schema": []
+        },
+        {
+          "id": "0af9aad8-351a-4ba3-aab4-f06c0a3cac82",
+          "title": "How respondent's rate music effects",
+          "query": "MATCH (p:Person)\nWHERE p.music_effects IS NOT NULL\nWITH p.music_effects as effect, COUNT(*) as count\nRETURN \n   effect as `Music Effect`,\n   count as Count,\n   round(toFloat(count * 100.0) / 736, 2) as Percentage\nORDER BY count DESC;\n\n\n\n\n\n",
+          "width": 15,
+          "height": 4,
+          "x": 9,
+          "y": 0,
+          "type": "bar",
+          "selection": {
+            "index": "Music Effect",
+            "value": "Count",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "layout": "horizontal",
+            "colors": "pastel1",
+            "marginLeft": 70
+          },
+          "schema": []
+        },
+        {
+          "id": "930eb463-948f-4cb6-a5c5-424432f3431b",
+          "title": "People between 20-25 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 20 AND p.age <= 25\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 22,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "legend": true,
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "316e2766-6241-4421-876f-85c3c1f2f45c",
+          "title": "Between 25-30 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 25 AND p.age <= 30\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 27,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "pastel2"
+          },
+          "schema": []
+        },
+        {
+          "id": "f5952a04-f163-4233-8064-0200731ed9d3",
+          "title": "between 30-40 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age > 30 AND p.age <= 40\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 27,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "set3"
+          },
+          "schema": []
+        },
+        {
+          "id": "77cc46ce-87ba-4269-b8ba-70c961533575",
+          "title": "People between 40-50 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 40 AND p.age <= 50\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 32,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "acb90ecc-1626-4deb-b0d7-de52c1215a29",
+          "title": "50+ People and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 50\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 32,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "pastel2"
+          },
+          "schema": []
+        },
+        {
+          "id": "a068745a-c59b-4e0e-9f3c-d112d5232b25",
+          "title": "<=2.5 hours per day and mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.hours_per_day <= 2.5\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n\n\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 42,
+          "type": "bar",
+          "selection": {
+            "index": "mental_health_issue",
+            "value": "avg_severity",
+            "key": "(none)"
+          },
+          "settings": {
+            "downloadImageEnabled": true,
+            "fullscreenEnabled": true,
+            "legend": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "b38d50c5-b633-4fbb-bc3f-a7872d5bca59",
+          "title": "2.5+ hours of listening to music per day and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.hours_per_day >= 2.5 AND p.hours_per_day < 5\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n\n\n\n\n\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 47,
+          "type": "bar",
+          "selection": {
+            "index": "mental_health_issue",
+            "value": "avg_severity",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired",
+            "legend": true
+          },
+          "schema": []
+        },
+        {
+          "id": "4d9ba77b-43c2-4d16-a5f5-604201fae10e",
+          "title": "Listening to music more than 5 hours a day and mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.hours_per_day >= 5\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n\n\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 47,
+          "type": "bar",
+          "selection": {
+            "index": "mental_health_issue",
+            "value": "avg_severity",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "e2449f63-259f-4770-b400-83a035ddb4c7",
+          "title": "People between 16-20 and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 16 AND p.age <= 20\nRETURN \n    p.age AS age,\n    AVG(CASE WHEN m.type = 'OCD' THEN r.severity ELSE NULL END) AS ocd,\n    AVG(CASE WHEN m.type = 'Insomnia' THEN r.severity ELSE NULL END) AS insomnia,\n    AVG(CASE WHEN m.type = 'Anxiety' THEN r.severity ELSE NULL END) AS anxiety,\n    AVG(CASE WHEN m.type = 'Depression' THEN r.severity ELSE NULL END) AS depression\nORDER BY age\n",
+          "width": 12,
+          "height": 5,
+          "x": 0,
+          "y": 12,
+          "type": "line",
+          "selection": {
+            "x": "age",
+            "value": [
+              "ocd",
+              "anxiety",
+              "insomnia",
+              "depression"
+            ]
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "b6a4ad0c-3ae0-4d39-9a50-407673b0a1fa",
+          "title": "People between 20-30and their mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age >= 20 AND p.age <= 30\nRETURN \n    p.age AS age,\n    AVG(CASE WHEN m.type = 'OCD' THEN r.severity ELSE NULL END) AS ocd,\n    AVG(CASE WHEN m.type = 'Insomnia' THEN r.severity ELSE NULL END) AS insomniay,\n    AVG(CASE WHEN m.type = 'Anxiety' THEN r.severity ELSE NULL END) AS anxiety,\n    AVG(CASE WHEN m.type = 'Depression' THEN r.severity ELSE NULL END) AS depression\nORDER BY age\n",
+          "width": 12,
+          "height": 5,
+          "x": 12,
+          "y": 12,
+          "type": "line",
+          "selection": {
+            "x": "age",
+            "value": [
+              "ocd",
+              "anxiety",
+              "insomniay",
+              "depression"
+            ]
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "legend": true,
+            "colors": "paired"
+          },
+          "schema": []
+        },
+        {
+          "id": "eb3f3dbb-d96b-43bb-a0b1-a0cf1f746d3a",
+          "title": "Their thoughts vs reality",
+          "query": "MATCH (p:Person)-[h:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.music_effects IS NOT NULL\nWITH \n    p.music_effects as effect,\n    m.type as conditions,\n    avg(h.severity) as severity\nRETURN \n    effect,\n    conditions,\n    round(severity * 100) / 100 as severity\nORDER BY \n    CASE effect \n        WHEN 'Improve' THEN 1 \n        WHEN 'No effect' THEN 2 \n        WHEN 'Worsen' THEN 3 \n    END,\n    conditions;",
+          "width": 9,
+          "height": 8,
+          "x": 0,
+          "y": 4,
+          "type": "table",
+          "selection": {},
+          "settings": {}
+        },
+        {
+          "id": "39586d02-9e9f-4134-971a-8e3d81e0db4e",
+          "title": "Their thoughts vs reality",
+          "query": "MATCH (p:Person)-[h:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.music_effects IS NOT NULL\nWITH \n    p.music_effects as effect,\n    m.type as conditions,\n    avg(h.severity) as severity\nRETURN \n    effect,\n    conditions,\n    round(severity * 100) / 100 as severity\nORDER BY effect, conditions",
+          "width": 15,
+          "height": 8,
+          "x": 9,
+          "y": 4,
+          "type": "bar",
+          "selection": {
+            "index": "effect",
+            "value": "severity",
+            "key": "conditions"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel1",
+            "legend": true,
+            "showOptionalSelections": true
+          },
+          "schema": []
+        },
+        {
+          "id": "2c9594d7-122d-43c6-afcc-373e9bf3def2",
+          "title": "Choose Persons age",
+          "query": "MATCH (n:`Person`) \nWHERE toLower(toString(n.`age`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`age` as value,  n.`age` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 8,
+          "height": 2,
+          "x": 0,
+          "y": 17,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "Person",
+            "propertyType": "age",
+            "propertyTypeDisplay": "age",
+            "parameterName": "neodash_person_age",
+            "autoSelectFirstValue": true
+          },
+          "schema": []
+        },
+        {
+          "id": "697f212a-ab21-4e5e-a7a8-d713a3b7e79a",
+          "title": "Persons age and their average mental health issues",
+          "query": "MATCH (p:Person)-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nWHERE p.age = $neodash_person_age\n  AND m.type IN ['Anxiety', 'Insomnia', 'Depression', 'OCD']\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n\n\n\n\n\n\n\n\n",
+          "width": 16,
+          "height": 5,
+          "x": 8,
+          "y": 17,
+          "type": "bar",
+          "selection": {
+            "index": "mental_health_issue",
+            "value": "avg_severity",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel1",
+            "marginBottom": 60
+          },
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "Frequency of Listening",
+      "reports": [
+        {
+          "id": "7fb3cd5d-eb85-4e06-bf8c-d216c793eb83",
+          "title": "Favorite genre = \"Rock\" and their mental health issues",
+          "query": "MATCH (p:Person {favorite_genre: 'Rock'})-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n",
+          "width": 11,
+          "height": 5,
+          "x": 0,
+          "y": 0,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired",
+            "marginBottom": 60
+          },
+          "schema": []
+        },
+        {
+          "id": "7a0c2472-7a48-464a-bb3d-91b942ba62d6",
+          "title": "Favorite genre = \"Metal\" and their mental health issues",
+          "query": "MATCH (p:Person {favorite_genre: 'Metal'})-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n",
+          "width": 13,
+          "height": 5,
+          "x": 11,
+          "y": 0,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired",
+            "marginBottom": 60
+          },
+          "schema": []
+        },
+        {
+          "id": "899a19f3-982e-4068-84df-3fd8b35ced29",
+          "title": "Favorite genre = \"Pop\" and their mental health issues",
+          "query": "MATCH (p:Person {favorite_genre: 'Pop'})-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n",
+          "width": 11,
+          "height": 5,
+          "x": 0,
+          "y": 5,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "colors": "pastel1",
+            "marginBottom": 60
+          },
+          "schema": []
+        },
+        {
+          "id": "6b3fe754-b884-4b80-8ced-2cc4e8d4e2ca",
+          "title": "Favorite genre = \"Lofi\" and their mental health issues",
+          "query": "MATCH (p:Person {favorite_genre: 'Lofi'})-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n",
+          "width": 13,
+          "height": 5,
+          "x": 11,
+          "y": 5,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "colors": "pastel1",
+            "marginBottom": 60
+          },
+          "schema": []
+        },
+        {
+          "id": "a436b2b0-1292-4d90-b261-97d9f431c69e",
+          "title": "Favorite genre = \"Your Pick\" and their mental health issues",
+          "query": "MATCH (p:Person {favorite_genre: $neodash_genre_name})-[r:HAS_CONDITION]->(m:MentalHealthIssue)\nRETURN \n    m.type AS mental_health_issue,\n    AVG(r.severity) AS avg_severity\nORDER BY mental_health_issue\n\n\n\n",
+          "width": 18,
+          "height": 6,
+          "x": 6,
+          "y": 10,
+          "type": "bar",
+          "selection": {
+            "key": "(none)",
+            "index": "mental_health_issue",
+            "value": "avg_severity"
+          },
+          "settings": {
+            "colors": "paired",
+            "downloadImageEnabled": true,
+            "fullscreenEnabled": true,
+            "marginBottom": 60
+          },
+          "schema": []
+        },
+        {
+          "id": "5b23020f-f8db-4ec3-a85e-9e7e0e86a665",
+          "title": "Choose a music genre",
+          "query": "MATCH (n:`Genre`) \nWHERE toLower(toString(n.`name`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`name` as value,  n.`name` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 6,
+          "height": 2,
+          "x": 0,
+          "y": 10,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "Genre",
+            "propertyType": "name",
+            "propertyTypeDisplay": "name",
+            "parameterName": "neodash_genre_name"
+          },
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "Genres",
+      "reports": [
+        {
+          "id": "d8cf8b15-fb86-4a3c-b795-8f0d81f81571",
+          "title": " Favorite genre = \"Rock\" and other frequently listened genres",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = 'Rock' AND g.name <> 'Rock' AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nRETURN genre, avgFrequency\n",
+          "width": 11,
+          "height": 5,
+          "x": 0,
+          "y": 0,
+          "type": "pie",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel1"
+          },
+          "schema": []
+        },
+        {
+          "id": "b9a43f94-6023-482c-a104-4e7b9d4cc826",
+          "title": " Favorite genre = \"Metal\" and other frequently listened genres",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = 'Metal' AND g.name <> 'Metal' AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nRETURN genre, avgFrequency\n",
+          "width": 13,
+          "height": 5,
+          "x": 11,
+          "y": 0,
+          "type": "pie",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "allowDownload": true,
+            "colors": "pastel2"
+          },
+          "schema": []
+        },
+        {
+          "id": "8ff64221-a2b8-41fe-a375-4c3a2b675b72",
+          "title": "Favorite genre = \"Lofi\" and other top 3 genres for that person",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = 'Lofi' AND g.name <> 'Lofi' AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nLIMIT 3\nRETURN genre, avgFrequency\n",
+          "width": 11,
+          "height": 5,
+          "x": 0,
+          "y": 5,
+          "type": "bar",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel1",
+            "marginBottom": 50
+          },
+          "schema": []
+        },
+        {
+          "id": "e59e1476-54e0-48b3-8838-2ab74d4a82df",
+          "title": "Favorite genre = \"Pop\" and other top 3 genres for that person",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = 'Pop' AND g.name <> 'Pop' AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nLIMIT 3\nRETURN genre, avgFrequency\n",
+          "width": 13,
+          "height": 5,
+          "x": 11,
+          "y": 5,
+          "type": "bar",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "paired",
+            "marginBottom": 50
+          },
+          "schema": []
+        },
+        {
+          "id": "6b266fec-ee26-4cda-a00a-182a36969604",
+          "title": "Choose a genre name",
+          "query": "MATCH (n:`Genre`) \nWHERE toLower(toString(n.`name`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`name` as value,  n.`name` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 7,
+          "height": 2,
+          "x": 0,
+          "y": 10,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "Genre",
+            "propertyType": "name",
+            "propertyTypeDisplay": "name",
+            "parameterName": "neodash_genre_name",
+            "description": "Pick a name of a genre and get other top 3 frequently listened genres for that person",
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "backgroundColor": "#B3D5F8"
+          },
+          "schema": []
+        },
+        {
+          "id": "b73e822b-81ee-42b8-93ae-b2f354752c71",
+          "title": "top 3 genres for that person",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = $neodash_genre_name AND g.name <> $neodash_genre_name AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nLIMIT 3\nRETURN genre, avgFrequency\n\n\n\n",
+          "width": 7,
+          "height": 4,
+          "x": 0,
+          "y": 12,
+          "type": "bar",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "colors": "paired",
+            "marginBottom": 50
+          },
+          "schema": []
+        },
+        {
+          "id": "d772af01-3a67-4676-851b-5fd59620f1d8",
+          "title": " Favorite genre = \"your pick\" and other frequently listened genres",
+          "query": "MATCH (p:Person)-[l:LISTENS_TO]->(g:Genre)\nWHERE p.favorite_genre = $neodash_genre_name AND g.name <> $neodash_genre_name AND l.frequency <> 'Never'\nWITH g.name AS genre, AVG(l.frequency_score) AS avgFrequency\nORDER BY avgFrequency DESC\nRETURN genre, avgFrequency\n\n\n\n",
+          "width": 17,
+          "height": 6,
+          "x": 7,
+          "y": 10,
+          "type": "pie",
+          "selection": {
+            "index": "genre",
+            "value": "avgFrequency",
+            "key": "(none)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "colors": "pastel2"
+          },
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "Graphs",
+      "reports": [
+        {
+          "id": "e8f09a40-d1b9-45bc-8350-555df8aaf4bf",
+          "title": "Person USES Streaming Platform",
+          "query": "MATCH p=()-[r:USES]->() RETURN p LIMIT 10\n\n\n",
+          "width": 23,
+          "height": 6,
+          "x": 0,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "Person": "id",
+            "StreamingService": "name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "relationshipParticles": true,
+            "enableEditing": true,
+            "showPropertiesOnHover": true,
+            "showPropertiesOnClick": true,
+            "allowDownload": true,
+            "hideSelections": false,
+            "rightClickToExpandNodes": true
+          },
+          "schema": [
+            [
+              "Person",
+              "while_working",
+              "foreign_languages",
+              "exploratory",
+              "hours_per_day",
+              "composer",
+              "instrumentalist",
+              "favorite_genre",
+              "id",
+              "bpm",
+              "age",
+              "music_effects"
+            ],
+            [
+              "StreamingService",
+              "name"
+            ]
+          ]
+        },
+        {
+          "id": "c72bccd1-c9ec-48ad-8984-237f1d0aa471",
+          "title": "People",
+          "query": "MATCH (n:Person) RETURN n LIMIT 25\n\n\n",
+          "width": 22,
+          "height": 5,
+          "x": 0,
+          "y": 6,
+          "type": "graph",
+          "selection": {
+            "Person": "id"
+          },
+          "settings": {
+            "downloadImageEnabled": true,
+            "fullscreenEnabled": true,
+            "autorun": true,
+            "relationshipParticles": true,
+            "enableEditing": true,
+            "showPropertiesOnClick": true,
+            "showPropertiesOnHover": true,
+            "allowDownload": true,
+            "rightClickToExpandNodes": true
+          },
+          "schema": [
+            [
+              "Person",
+              "while_working",
+              "foreign_languages",
+              "exploratory",
+              "hours_per_day",
+              "composer",
+              "instrumentalist",
+              "favorite_genre",
+              "id",
+              "bpm",
+              "age",
+              "music_effects"
+            ]
+          ]
+        },
+        {
+          "id": "33a93042-9d05-4243-b08b-e05f08f7a3ca",
+          "title": "A Person Has Mental Health Condition",
+          "query": "MATCH p=()-[r:HAS_CONDITION]->() RETURN p LIMIT 25\n\n\n",
+          "width": 22,
+          "height": 5,
+          "x": 0,
+          "y": 11,
+          "type": "graph",
+          "selection": {
+            "Person": "id",
+            "MentalHealthIssue": "(label)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": true,
+            "refreshButtonEnabled": true,
+            "enableEditing": true,
+            "showPropertiesOnHover": true,
+            "allowDownload": true,
+            "rightClickToExpandNodes": true
+          },
+          "schema": [
+            [
+              "Person",
+              "while_working",
+              "foreign_languages",
+              "exploratory",
+              "hours_per_day",
+              "composer",
+              "instrumentalist",
+              "favorite_genre",
+              "id",
+              "bpm",
+              "age",
+              "music_effects"
+            ],
+            [
+              "MentalHealthIssue",
+              "type"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "parameters": {},
+  "extensions": {
+    "active": true,
+    "activeReducers": [],
+    "advanced-charts": {
+      "active": true
+    }
+  }
+}
