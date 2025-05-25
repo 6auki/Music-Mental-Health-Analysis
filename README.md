@@ -1,10 +1,10 @@
-# Music Mental Health Analysis
+# Music Mental Health Analysis Using Neo4j Graph Database
 
 A comprehensive data analysis project exploring the correlations between music preferences and self-reported mental health using Neo4j graph database and interactive dashboards.
 
 ## Project Overview
 
-This project analyzes the **"Music & Mental Health Survey Results"** dataset from Kaggle to identify correlations between individual music taste and mental health conditions. The analysis is built using Neo4j graph database with interactive dashboards for data visualization.
+This project analyzes the **"Music & Mental Health Survey Results"** dataset from Kaggle to identify correlations between individual music taste and mental health conditions. The analysis is built using **Neo4j graph database** with interactive dashboards for data visualization.
 
 ## Key Findings
 
