@@ -50,7 +50,7 @@ This project analyzes the **"Music & Mental Health Survey Results"** dataset fro
 - Composer vs. non-composer mental health comparison
 - Work listening habits and mental health correlation
 
-### 4. Genre-Specific Analysis
+### 4. Frequency of Listening
 - Mental health patterns for Rock, Metal, Pop, and Lofi listeners
 - Parameter-driven genre selection for custom analysis
 
@@ -70,7 +70,7 @@ This project analyzes the **"Music & Mental Health Survey Results"** dataset fro
 music-mental-health-analysis/
 ├── README.md
 ├── data/
-│   ├── music.csv                 # Raw survey data (736 rows, 32 columns)
+│   ├── music.csv                 # Raw survey data (736 rows, 31 columns used)
 │   └── export.csv                # Neo4j export data
 ├── dashboard/
 │   └── dashboard.json            # Neo4j dashboard configuration
@@ -89,7 +89,7 @@ music-mental-health-analysis/
 
 **Source**: Kaggle - "Music & Mental Health Survey Results"
 
-**Size**: 736 respondents, 32 attributes
+**Size**: 736 respondents, 31 attributes (32 columns total, excluding permissions)
 
 **Key Attributes**:
 - Demographics: Age
@@ -185,6 +185,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Dataset source: Kaggle "Music & Mental Health Survey Results"
 - Neo4j community for graph database tools
 - NeoDash for interactive dashboard capabilities
+
 
 ---
 
